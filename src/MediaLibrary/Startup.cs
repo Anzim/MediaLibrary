@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
+using MediaLibrary.Models;
+using Microsoft.EntityFrameworkCore.SqlServer;
 namespace MediaLibrary
 {
     public class Startup
@@ -33,7 +34,9 @@ namespace MediaLibrary
             //services.AddScoped<IRestaurantData, InMemoryRestaurantData>();
             //services.AddRouting();
             //services.AddDbContext<Mp3EhbContext>(contextLifetime: ServiceLifetime.Scoped);
-            //options.UseSqlServer(Configuration.GetConnectionString("Mp3EhbDatabase")));
+            services.AddDbContext<MediaLibraryContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DataAccessMsSqlProvider"]));
+
+		//options.UseSqlServer(Configuration.GetConnectionString("Mp3EhbDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
