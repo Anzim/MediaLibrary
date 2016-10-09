@@ -29,6 +29,11 @@ namespace MediaLibrary
         {
             // Add framework services.
             services.AddMvc();
+            services.AddSingleton(provider => Configuration);
+            //services.AddScoped<IRestaurantData, InMemoryRestaurantData>();
+            //services.AddRouting();
+            //services.AddDbContext<Mp3EhbContext>(contextLifetime: ServiceLifetime.Scoped);
+            //options.UseSqlServer(Configuration.GetConnectionString("Mp3EhbDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
