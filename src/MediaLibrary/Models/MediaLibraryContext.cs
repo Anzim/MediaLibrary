@@ -9,12 +9,12 @@ namespace MediaLibrary.Models
 	public MediaLibraryContext() {}
 	
 	public MediaLibraryContext(DbContextOptions<MediaLibraryContext> options) : base(options) {}
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"server=sql5031.myasp.net;user=DB_A10CEB_medialib_admin;password=Seattle-2016;database=DB_A10CEB_medialib;");
-        }
+        
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+        //    optionsBuilder.UseSqlServer(@"server=sql5031.myasp.net;user=DB_A10CEB_medialib_admin;password=Seattle-2016;database=DB_A10CEB_medialib;");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +64,10 @@ namespace MediaLibrary.Models
                 entity.Property(e => e.ZipFile)
                     .HasColumnName("zip_file")
                     .HasMaxLength(255);
+
+                entity.HasOne(e => e.Parent)
+                    .WithMany(e => e.Children)
+                    .HasForeignKey(e => e.ParentId);
             });
         }
 

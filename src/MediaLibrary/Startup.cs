@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -8,7 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MediaLibrary.Models;
-using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.EntityFrameworkCore;
+using MySQL.Data.EntityFrameworkCore.Extensions;
+using Newtonsoft.Json.Serialization;
+
 namespace MediaLibrary
 {
     public class Startup
@@ -17,7 +21,7 @@ namespace MediaLibrary
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -29,20 +33,28 @@ namespace MediaLibrary
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(options => {
+                    options.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+            
             services.AddSingleton(provider => Configuration);
             //services.AddScoped<IRestaurantData, InMemoryRestaurantData>();
             //services.AddRouting();
             //services.AddDbContext<Mp3EhbContext>(contextLifetime: ServiceLifetime.Scoped);
-            services.AddDbContext<MediaLibraryContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DataAccessMsSqlProvider"]));
-
-		//options.UseSqlServer(Configuration.GetConnectionString("Mp3EhbDatabase")));
+            //var connectionString = Configuration["ConnectionStrings:DataAccessMySqlProvider"];
+            var connectionString = Configuration.GetConnectionString("DataAccessMySqlProvider");
+            services.AddDbContext<MediaLibraryContext>(options =>
+                options.UseMySQL(connectionString));
+            //options.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddProvider(new DbLoggerProvider());
             loggerFactory.AddDebug();
 
             app.UseMvc();
