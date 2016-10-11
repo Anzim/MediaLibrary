@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MediaLibrary.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class FoldersController : Controller
     {
         protected MediaLibraryContext Context { get; private set; }
@@ -58,9 +58,12 @@ namespace MediaLibrary.Controllers
         [HttpGet("{id}")]
         public async Task<FolderDetails> GetDetails(int id)
         {
-            var result = await Folders
+            var folder = await Folders
                 .FirstOrDefaultAsync(f => f.FolderId == id);
-
+	    
+	    var result = new FolderDetails();
+            result.CopyFrom(folder);	
+	
             return result;
         }
 

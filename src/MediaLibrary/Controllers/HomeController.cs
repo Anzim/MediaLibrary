@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MediaLibrary.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("")]
     public class HomeController : Controller
     {
         // GET /
-        [Route("")]
+     
         [HttpGet]
         public string Get()
         {
-            return "It works!";
+            return "try http://api.propovednik.com/folders, http://api.propovednik.com/folders/1, http://api.propovednik.com/folders/1/details, http://api.propovednik.com/folders/1/children";
         }
 
 
