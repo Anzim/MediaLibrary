@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MediaLibrary.Models;
 using Microsoft.EntityFrameworkCore;
-using MySQL.Data.EntityFrameworkCore.Extensions;
+//using MySQL.Data.EntityFrameworkCore.Extensions;
 using Newtonsoft.Json.Serialization;
 
 namespace MediaLibrary
@@ -42,12 +42,11 @@ namespace MediaLibrary
             services.AddSingleton(provider => Configuration);
             //services.AddScoped<IRestaurantData, InMemoryRestaurantData>();
             //services.AddRouting();
-            //services.AddDbContext<Mp3EhbContext>(contextLifetime: ServiceLifetime.Scoped);
             //var connectionString = Configuration["ConnectionStrings:DataAccessMySqlProvider"];
-            var connectionString = Configuration.GetConnectionString("DataAccessMySqlProvider");
+            var connectionString = Configuration.GetConnectionString("DataAccessMsSqlProvider");
             services.AddDbContext<MediaLibraryContext>(options =>
-                options.UseMySQL(connectionString));
-            //options.UseSqlServer(connectionString));
+                //options.UseMySQL(connectionString));
+                options.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

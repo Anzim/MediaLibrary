@@ -14,7 +14,7 @@ namespace MediaLibrary.Controllers
     public class FoldersController : Controller
     {
         protected MediaLibraryContext Context { get; private set; }
-        protected IQueryable<Folder> Folders { get; set; }
+        protected IQueryable<Folder> Folders { get; private set; }
         public FoldersController(MediaLibraryContext context)
         {
             context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
