@@ -81,6 +81,20 @@ namespace MediaLibrary.Controllers
             //return Folders.OrderBy(f => f.FolderName).Include(f => new f.Children).FirstOrDefault(f => f.FolderId == id);
         }
 
+        // GET /folders/5/children
+        [HttpGet("{id}/tracks")]
+        public async Task<IList<Track>> GetTracks(int id)
+        {
+            var result = await Context.Tracks
+                .Where(f => f.FolderId == id && f.Privacy == "public")
+                //.Select(ci => new FolderInfo { FolderId = ci.FolderId, FolderName = ci.FolderName, IsCategory = ci.IsCategory })
+                //.OrderBy(f => f.Album)
+                //.ThenBy(f => f.TrackId)
+                .ToListAsync();
+
+            return result;
+        }
+
         // POST /folders
         [HttpPost]
         public IActionResult Post([FromBody]string value)
