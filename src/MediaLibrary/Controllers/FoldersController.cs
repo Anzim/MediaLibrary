@@ -24,12 +24,12 @@ namespace MediaLibrary.Controllers
 
         
 
-        // GET api/folders
+        // GET /folders
         [HttpGet]
         public async Task<IList<FolderInfo>> GetList()
         {
             var result = await Folders
-                .Where(f => f.ParentId == 0)
+                .Where(f => f.ParentId == 0 && f.Privacy == "public")
                 .OrderBy(f => f.FolderName)
                 .Select(f => new FolderInfo { FolderId = f.FolderId, FolderName = f.FolderName, IsCategory = f.IsCategory})
                 .ToListAsync();
@@ -37,12 +37,12 @@ namespace MediaLibrary.Controllers
             return result;
         }
 
-        // GET api/folders/details
+        // GET /folders/details
         [HttpGet("details")]
         public async Task<IList<FolderDetails>> GetListWithDetails()
         {
             var result = await Folders
-                .Where(f => f.ParentId == 0)
+                .Where(f => f.ParentId == 0 && f.Privacy == "public")
                 .OrderBy(f => f.FolderName)
                 .ToListAsync();
 
@@ -54,7 +54,7 @@ namespace MediaLibrary.Controllers
             }).ToList();
         }
 
-        // GET api/folders/5
+        // GET /folders/5
         [HttpGet("{id}")]
         public async Task<FolderDetails> GetDetails(int id)
         {
@@ -67,40 +67,35 @@ namespace MediaLibrary.Controllers
             return result;
         }
 
-        // GET api/folders/5/children
+        // GET /folders/5/children
         [HttpGet("{id}/children")]
         public async Task<IList<FolderInfo>> GetChildren(int id)
         {
             var result = await Folders
-                .Where(f => f.ParentId == id)
+                .Where(f => f.ParentId == id && f.Privacy == "public")
                 .Select(ci => new FolderInfo { FolderId = ci.FolderId, FolderName = ci.FolderName, IsCategory = ci.IsCategory } )
                 .OrderBy(f => f.FolderName)
                 .ToListAsync();
             
             return result;
-            //var childrenInfo = await Folders
-            //    .OrderBy(f => f.FolderName)
-            //    .Select(f => new ForderInfo { FolderId = f.FolderId, FolderName = f.FolderName, IsCategory = f.IsCategory })
-            //    .ToListAsync();
-
             //return Folders.OrderBy(f => f.FolderName).Include(f => new f.Children).FirstOrDefault(f => f.FolderId == id);
         }
 
-        // POST api/folders
+        // POST /folders
         [HttpPost]
         public IActionResult Post([FromBody]string value)
         {
             return new StatusCodeResult(501);
         }
 
-        // PUT api/folders/5
+        // PUT /folders/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]string value)
         {
             return new StatusCodeResult(501);
         }
 
-        // DELETE api/folders/5
+        // DELETE /folders/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

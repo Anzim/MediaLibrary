@@ -14,7 +14,7 @@ namespace MediaLibrary.Controllers
         [HttpGet]
         public string Get()
         {
-            return "try http://api.propovednik.com/folders, http://api.propovednik.com/folders/1, http://api.propovednik.com/folders/1/details, http://api.propovednik.com/folders/1/children";
+            return "try http://api.propovednik.com/folders, http://api.propovednik.com/folders/1, http://api.propovednik.com/folders/1/children";
         }
 
 
