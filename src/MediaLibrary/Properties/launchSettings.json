@@ -19,7 +19,7 @@
     "MediaLibrary": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5001/folders",
+      "launchUrl": "http://localhost:6001/folders",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
