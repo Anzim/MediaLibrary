@@ -14,7 +14,7 @@ namespace MediaLibrary
                 .UseIISIntegration()
                 .ConfigureLogging(f => f.AddConsole(LogLevel.Debug))
                 .UseStartup<Startup>()
-		        .UseUrls("http://localhost:6001/")
+	        .UseUrls("http://localhost:5001/")
                 .Build();
 
             host.Run();
