@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using MediaLibrary.Models;
-using MediaLibrary.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,14 +9,18 @@ namespace MediaLibrary.Controllers
     [Route("[controller]")]
     public class TracksController : Controller
     {
+        private static string _baseUrl = "http://propovednik.com/media/mp3/";
         protected MediaLibraryContext Context { get; private set; }
-        protected IQueryable<Track> Tracks { get; set; }
+        protected IQueryable<Track> Tracks { get; private set; }
+        protected IQueryable<Folder> Folders { get; set; }
         public TracksController(MediaLibraryContext context)
         {
             context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             Context = context;
             Tracks = Context.Tracks.AsNoTracking();
+            Folders = Context.Folders.AsNoTracking();
         }
+
 
 
 
@@ -65,7 +65,18 @@ namespace MediaLibrary.Controllers
             if (track == null) return NotFound();
             if (track.Privacy != "public" &&
                 (User == null || !User.HasClaim(c => c.Type == "privacy" && c.Type == track.Privacy))) return Forbid();
+
+            track.TrackFile = await GetFolderUrl(track.FolderId) + track.TrackFile;
             return new ObjectResult(track);
+        }
+
+        private async Task<string> GetFolderUrl(int folderId)
+        {
+            if (folderId == 0) return _baseUrl;
+            var folder = await Folders.Select(f => new { f.FolderId, f.FolderName, f.ParentId })
+                .FirstOrDefaultAsync(f => f.FolderId == folderId);
+            var result = GetFolderUrl(folder.ParentId) + folder.FolderName + "/";
+            return result;
         }
 
         // GET /tracks/5/children

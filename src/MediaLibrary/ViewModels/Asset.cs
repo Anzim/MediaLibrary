@@ -16,7 +16,7 @@ namespace MediaLibrary.ViewModels
         public void CopyFrom<T>(T source, IEnumerable<string> propertyNames)//, bool ignoreErrors = true)
         {
             var sourceType = typeof(T);
-            var type = this.GetType();
+            var type = GetType();
             foreach (var sourcePropertyName in propertyNames)
             {
                 var targetProperty = type.GetProperty(sourcePropertyName);

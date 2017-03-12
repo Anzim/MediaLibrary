@@ -1,5 +1,4 @@
 ﻿using System;
-using MediaLibrary.Models;
 
 namespace MediaLibrary.ViewModels
 {
