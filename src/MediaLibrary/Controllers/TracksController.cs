@@ -75,7 +75,7 @@ namespace MediaLibrary.Controllers
             if (folderId == 0) return _baseUrl;
             var folder = await Folders.Select(f => new { f.FolderId, f.FolderName, f.ParentId })
                 .FirstOrDefaultAsync(f => f.FolderId == folderId);
-            var result = GetFolderUrl(folder.ParentId) + folder.FolderName + "/";
+            var result = await GetFolderUrl(folder.ParentId) + folder.FolderName + "/";
             return result;
         }
 
