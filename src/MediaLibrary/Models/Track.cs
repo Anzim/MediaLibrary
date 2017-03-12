@@ -2,7 +2,7 @@
 
 namespace MediaLibrary.Models
 {
-    public class Track
+    public partial class Track
     {
         public int TrackId { get; set; }
         public string TrackTitle { get; set; }

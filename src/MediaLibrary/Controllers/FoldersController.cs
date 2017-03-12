@@ -85,7 +85,7 @@ namespace MediaLibrary.Controllers
         {
             var result = await Context.Tracks
                 .Where(f => f.FolderId == id && f.Privacy == "public")
-                //.Select(ci => new FolderInfo { FolderId = ci.FolderId, FolderName = ci.FolderName, IsCategory = ci.IsCategory })
+                //.Select(ci => new TrackInfo { TrackId = ci.TrackId, FolderName = ci.FolderName, IsCategory = ci.IsCategory })
                 //.OrderBy(f => f.Album)
                 //.ThenBy(f => f.TrackId)
                 .ToListAsync();
